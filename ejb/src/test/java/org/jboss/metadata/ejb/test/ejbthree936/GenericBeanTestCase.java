@@ -21,10 +21,9 @@
  */
 package org.jboss.metadata.ejb.test.ejbthree936;
 
-import org.jboss.metadata.ejb.jboss.ejb3.JBossEjb31MetaData;
+import org.jboss.metadata.ejb.jboss.ejb3.JBossEjbJarMetaData;
 import org.jboss.metadata.ejb.spec.AbstractEnterpriseBeanMetaData;
-import org.jboss.metadata.ejb.spec.EjbJar30MetaData;
-import org.jboss.metadata.ejb.spec.EjbJar31MetaData;
+import org.jboss.metadata.ejb.spec.EjbJarMetaData;
 import org.jboss.metadata.ejb.spec.EjbJarVersion;
 import org.jboss.metadata.ejb.spec.EjbType;
 import org.jboss.metadata.ejb.spec.EnterpriseBeansMetaData;
@@ -51,7 +50,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class GenericBeanTestCase
 {
-   private static void assertJar(JBossEjb31MetaData metaData)
+   private static void assertJar(EjbJarMetaData metaData)
    {
       assertEquals(1, metaData.getEnterpriseBeans().size());
       AbstractEnterpriseBeanMetaData bean = metaData.getEnterpriseBean("MyStatelessBean");
@@ -64,14 +63,14 @@ public class GenericBeanTestCase
    @Test
    public void testMerge() throws Exception
    {
-      JBossEjb31MetaData metaData = unmarshal(JBossEjb31MetaData.class, "/org/jboss/metadata/ejb/test/ejbthree936/jboss-ejb3.xml");
-      EjbJar31MetaData original = new EjbJar31MetaData();
+      EjbJarMetaData metaData = unmarshal(JBossEjbJarMetaData.class, "/org/jboss/metadata/ejb/test/ejbthree936/jboss-ejb3.xml");
+      EjbJarMetaData original = new EjbJarMetaData(EjbJarVersion.EJB_3_1);
       original.setEnterpriseBeans(new EnterpriseBeansMetaData());
       GenericBeanMetaData sessionBean = new GenericBeanMetaData();
       sessionBean.setEjbType(EjbType.SESSION);
       sessionBean.setEjbName("MyStatelessBean");
       original.getEnterpriseBeans().add(sessionBean);
-      JBossEjb31MetaData merged = metaData.createMerged(original);
+      EjbJarMetaData merged = metaData.createMerged(original);
       assertJar(merged);
       AbstractEnterpriseBeanMetaData bean = merged.getEnterpriseBean("MyStatelessBean");
       assertTrue(bean.isSession());
@@ -84,13 +83,13 @@ public class GenericBeanTestCase
    @Test
    public void testMerge2() throws Exception
    {
-      JBossEjb31MetaData metaData = unmarshal(JBossEjb31MetaData.class, "/org/jboss/metadata/ejb/test/ejbthree936/jboss-ejb3.xml");
-      EjbJar31MetaData original = new EjbJar31MetaData();
+      EjbJarMetaData metaData = unmarshal(JBossEjbJarMetaData.class, "/org/jboss/metadata/ejb/test/ejbthree936/jboss-ejb3.xml");
+      EjbJarMetaData original = new EjbJarMetaData(EjbJarVersion.EJB_3_1);
       original.setEnterpriseBeans(new EnterpriseBeansMetaData());
       GenericBeanMetaData sessionBean = new GenericBeanMetaData();
       sessionBean.setEjbName("OtherStatelessBean");
       original.getEnterpriseBeans().add(sessionBean);
-      JBossEjb31MetaData merged = metaData.createMerged(original);
+      EjbJarMetaData merged = metaData.createMerged(original);
       AbstractEnterpriseBeanMetaData bean = merged.getEnterpriseBean("OtherStatelessBean");
       // TODO: define the output
       assertNotNull(bean);
@@ -99,7 +98,7 @@ public class GenericBeanTestCase
    @Test
    public void testParse() throws Exception
    {
-      JBossEjb31MetaData metaData = unmarshal(JBossEjb31MetaData.class, "/org/jboss/metadata/ejb/test/ejbthree936/jboss-ejb3.xml");
+      EjbJarMetaData metaData = unmarshal(JBossEjbJarMetaData.class, "/org/jboss/metadata/ejb/test/ejbthree936/jboss-ejb3.xml");
       assertJar(metaData);
    }
 
@@ -109,7 +108,7 @@ public class GenericBeanTestCase
    @Test
    public void testPolymorphism() throws Exception
    {
-      final EjbJar30MetaData jarMetaData = new EjbJar30MetaData();
+      final EjbJarMetaData jarMetaData = new EjbJarMetaData(EjbJarVersion.EJB_3_0);
       jarMetaData.setEnterpriseBeans(new EnterpriseBeansMetaData());
       final GenericBeanMetaData bean = new GenericBeanMetaData(EjbType.SESSION);
       bean.setEjbName("Simple30Bean");

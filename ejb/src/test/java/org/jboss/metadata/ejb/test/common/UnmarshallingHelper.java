@@ -21,7 +21,7 @@
  */
 package org.jboss.metadata.ejb.test.common;
 
-import org.jboss.metadata.ejb.jboss.ejb3.JBossEjb31MetaData;
+import org.jboss.metadata.ejb.jboss.ejb3.JBossEjbJarMetaData;
 import org.jboss.metadata.ejb.parser.jboss.ejb3.JBossEjb3MetaDataParser;
 import org.jboss.metadata.ejb.parser.spec.AbstractMetaDataParser;
 import org.jboss.metadata.ejb.parser.spec.EjbJarMetaDataParser;
@@ -63,7 +63,7 @@ public class UnmarshallingHelper
       inputFactory.setXMLResolver(info);
       XMLStreamReader reader = inputFactory.createXMLStreamReader(in);
 
-      if (JBossEjb31MetaData.class.isAssignableFrom(expected))
+      if (JBossEjbJarMetaData.class.isAssignableFrom(expected))
       {
          return expected.cast(new JBossEjb3MetaDataParser(parsers).parse(reader, info));
       }

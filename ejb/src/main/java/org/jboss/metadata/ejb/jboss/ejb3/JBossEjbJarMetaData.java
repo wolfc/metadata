@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source.
- * Copyright 2008, Red Hat Middleware LLC, and individual contributors
+ * Copyright (c) 2011, Red Hat, Inc., and individual contributors
  * as indicated by the @author tags. See the copyright.txt file in the
  * distribution for a full listing of individual contributors.
  *
@@ -19,41 +19,42 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.metadata.ejb.spec;
+package org.jboss.metadata.ejb.jboss.ejb3;
 
-import org.jboss.metadata.javaee.jboss.NamedModule;
+import org.jboss.metadata.ejb.spec.EjbJarMetaData;
+import org.jboss.metadata.ejb.spec.EjbJarVersion;
 
 /**
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
- * @version $Revision: $
  */
-public class EjbJar31MetaData extends EjbJar3xMetaData implements NamedModule
-{
-   private static final long serialVersionUID = 1L;
+public class JBossEjbJarMetaData extends EjbJarMetaData {
+   private String implVersion;
 
-   private String moduleName;
+   /**
+    * Create a new EjbJarMetaData.
+    *
+    * @param ejbJarVersion
+    */
+   public JBossEjbJarMetaData(final EjbJarVersion ejbJarVersion)
+   {
+      super(ejbJarVersion);
+   }
+
+   public JBossEjbJarMetaData createMerged(final EjbJarMetaData original)
+   {
+      final JBossEjbJarMetaData merged = new JBossEjbJarMetaData(original.getEjbJarVersion());
+      merged.merge(this, original);
+      return merged;
+   }
 
    @Override
-   public EjbJarVersion getEjbJarVersion()
+   public JBossAssemblyDescriptorMetaData getAssemblyDescriptor()
    {
-      return EjbJarVersion.EJB_3_1;
+      return (JBossAssemblyDescriptorMetaData) super.getAssemblyDescriptor();
    }
 
-   public String getModuleName()
+   public void setImplVersion(String implVersion)
    {
-      return moduleName;
-   }
-   public void setModuleName(String moduleName)
-   {
-      this.moduleName = moduleName;
-   }
-
-   public void merge(final EjbJar31MetaData override, final EjbJar31MetaData original)
-   {
-      super.merge(override, original);
-      if (override != null && override.getModuleName() != null)
-         setModuleName(override.getModuleName());
-      else if (original != null && original.getModuleName() != null)
-         setModuleName(original.getModuleName());
+      this.implVersion = implVersion;
    }
 }
