@@ -13,6 +13,37 @@
 
     <description>The JavaEE EJB metadata classes</description>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>xml-maven-plugin</artifactId>
+                <version>1.0.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>validate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <catalogs>
+                        <catalog>src/test/resources/catalog.xml</catalog>
+                    </catalogs>
+                    <validationSets>
+                        <validationSet>
+                            <validating>true</validating>
+                            <dir>src/test/resources/org/jboss/metadata/ejb/test/txtimeout</dir>
+                            <!--
+                            <includes>*.xml</includes>
+                            <excludes>log4j.xml</excludes>
+                            -->
+                        </validationSet>
+                    </validationSets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <!-- Compile Dependencies -->
     <dependencies>
 
